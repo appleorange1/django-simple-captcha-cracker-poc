@@ -6,9 +6,9 @@ The audio challenges used by [django-simple-captcha](https://github.com/mbi/djan
 However, flite produces constant output for any given input.
 
 So, for example, the command:
-
+```
  $ flite -t "B, C, H, U" -o BCHU.wav
-
+```
 will produce the same output file every time it is run.
 
 ## The problem
@@ -43,15 +43,23 @@ generate a match.
 ## How to use this Proof of Concept tool
 
 1. Install dependencies. Note that this tool uses Python 2, not Python 3.
+
 Using pip:
+```
  $ pip install -r requirements.txt
+```
+
 Using apt (on Debian-based systems):
+```
  $ apt install python-bs4
+```
 
 2. Run the testproject created by the developers:
+```
  $ git clone https://github.com/mbi/django-simple-captcha
  $ cd django-simple-captcha/testproject
  $ python manage.py runserver
+```
 If all has gone well, then the server should be running on
 http://localhost:8000
 If this is not the case, you will need to modify the argument to the
@@ -59,7 +67,9 @@ getCaptcha() function in captcha_cracker.py before running it.
 
 3. Run the script! It should download a challenge from the server, and print
 the solution to the terminal.
+```
  $ python captcha_craker.py
+```
 
 4. If this does not work, you may have a different flite setup to the 
 one I had when I generated the database, and you will have to generate your own.
@@ -67,15 +77,23 @@ This can take a long time, so be patient, and do not interrupt it while it is
 running. To do this, you must:
 
 4.1. Remove the non-working database
+```
  $ rm checksums.db
+```
 
 4.2. Uncomment genDatabase() in captcha_cracker.py. That is, replace the line:
+```
 #genDatabase()
+```
 with
+```
 genDatabase()
+```
 
 4.3. Run the modified script!
+```
  $ python captcha_cracker.py
+```
 
 ## License
 Copyright 2017 Riley Baird. GNU General Public License 3.0 or (at your option)
