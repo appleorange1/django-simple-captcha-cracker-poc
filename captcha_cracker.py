@@ -52,18 +52,23 @@ def getCaptcha(url):
 	audiolink = url + '/captcha/audio/' + value + '.wav'
 	response = urllib2.urlopen(audiolink)
 	audio = response.read()
-	sha256 = hashlib.sha256()
-	sha256.update(audio)
-	connection = sqlite3.connect('checksums.db')
-	c = connection.cursor()
-	c.execute('''SELECT challenge FROM checksums WHERE checksum = "''' + sha256.hexdigest() + '''";''')
-	result = c.fetchone()
-	if result is not None:
-		print result[0]
-	else:
-		print "Could not find the checksum of this CAPTCHA in our database"
+	count = 0
+	while count <= 1024:
+		audio = audio[0:len(audio)-1]
+		sha256 = hashlib.sha256()
+		sha256.update(audio)
+		connection = sqlite3.connect('checksums.db')
+		c = connection.cursor()
+		c.execute('''SELECT challenge FROM checksums WHERE checksum = "''' + sha256.hexdigest() + '''";''')
+		result = c.fetchone()
+		if result is not None:
+			print result[0]
+			break
+		count += 1
 	connection.commit()
 	connection.close()
+	if count == 1025:
+		print "Could not find the checksum of this CAPTCHA in our database"
 
 #genDatabase()
 getCaptcha('http://localhost:8000')
